@@ -1,0 +1,90 @@
+﻿@page "/manage-students"
+@using CrudDemoBlazorServer.Entity
+@using CrudDemoBlazorServer.Services
+@inject StudentService studentService
+
+<NavLink class="nav-link" href="addfarmdetails">
+    <span class="oi oi-plus" aria-hidden="true"> Add New FarmDetails..</span>
+</NavLink>
+
+<h3>Students Details...</h3>
+
+@if (Students is null)
+{
+    <p><em>Loading..............!!</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Student No
+                </th>
+                <th>
+                    Student Name
+                </th>
+                <th>
+                    Age
+                </th>
+                <th>
+                    Mobile
+                </th>
+                <th>
+                    Subject
+                </th>
+                <th>
+                    Fees
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var stu in Students)
+            {
+                <tr>
+                    <td>
+                        @stu.Id
+                    </td>
+                    <td>
+                        @stu.StudentName
+                    </td>
+                    <td>
+                        @stu.StudentAge
+                    </td>
+                    <td>
+                        @stu.Mobile
+                    </td>
+                    <td>
+                        @stu.Subject
+                    </td>
+                    <td>
+                        @stu.Fees
+                    </td>
+                    <td>
+                        <a class="nav-link btn btn-group-sm" href="editStudent/@stu.Id">
+                            <span class="oi oi-pencil" aria-hidden="true"> Edit </span>
+                        </a>
+                    </td>
+                    <td>
+                        <a class="nav-link btn btn-group-sm" href="deleteStudent/@stu.Id">
+                            <span class="oi oi-trash" aria-hidden="true"> Delete </span>
+                        </a>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+
+@code {
+    List<Student> Students;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Students = await Task.Run(() => studentService.GetAllStudents());
+    }
+
+}
